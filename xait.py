@@ -95,18 +95,13 @@ def add_desc(el, arg_or_cmd):
         desc = ET.SubElement(el, 'description')
         desc.text = arg_or_cmd['desc']
 
-def set_bit_length(el, tname):
-    if (tname == 'U8' or tname == 'I8'):
-        el.set('bit_length', '8')
-    elif (tname == 'MSB_U16' or tname == 'LSB_U16' or
-          tname == 'MSB_I16' or tname == 'LSB_I16'):
-        el.set('bit_length', '16')
-    elif (tname == 'MSB_U32' or tname == 'LSB_U32' or
-          tname == 'MSB_I32' or tname == 'LSB_I32'):
-        el.set('bit_length', '32')
-    elif (tname == 'MSB_U64' or tname == 'LSB_U64' or
-          tname == 'MSB_I64' or tname == 'LSB_I64'):
-        el.set('bit_length', '64')
+def set_bit_length(el, arg):
+    if 'bytes' not in arg:
+        print('expected bytes field in arg ' + arg['name'])
+        exit(1)
+    b = arg['bytes']
+    nb = 1 if type(b) != list else int(b[1])-int(b[0])+1
+    el.set('bit_length', str(nb*8))
 
 def add_arg(argsel, arg, enum_def_el):
     tname = arg['type']
@@ -124,15 +119,12 @@ def add_arg(argsel, arg, enum_def_el):
     # strings
     if tname[0] == 'S':
         el = ET.SubElement(argsel, 'fixed_string_arg')
-        numbits = 8 * int(tname[1:])
-        el.set('bit_length', str(numbits))
 
     # enums
     if 'enum' in arg:
         el = ET.SubElement(argsel, 'enum_arg')
         ename = add_enum_table(enum_def_el, arg)
         el.set('enum_name', ename)
-        set_bit_length(el, tname)
 
     # unsigned ints
     elif (tname == 'U8' or
@@ -140,7 +132,6 @@ def add_arg(argsel, arg, enum_def_el):
           tname == 'MSB_U32' or tname == 'LSB_U32' or
           tname == 'MSB_U64' or tname == 'LSB_U64'):
         el = ET.SubElement(argsel, 'unsigned_arg')
-        set_bit_length(el, tname)
 
     # signed ints
     elif (tname == 'I8' or
@@ -148,17 +139,14 @@ def add_arg(argsel, arg, enum_def_el):
           tname == 'MSB_I32' or tname == 'LSB_I32' or
           tname == 'MSB_I64' or tname == 'LSB_I64'):
         el = ET.SubElement(argsel, 'integer_arg')
-        set_bit_length(el, tname)
 
     # float
     elif tname == 'MSB_F32' or tname == 'LSB_F32':
         el = ET.SubElement(argsel, 'float_arg')
-        el.set('bit_length', '32')
 
     # double
     elif tname == 'MSB_D64' or tname == 'LSB_D64':
         el = ET.SubElement(argsel, 'float_arg')
-        el.set('bit_length', '64')
 
     # unknown type just handle as a var_string_arg for now
     if el is None:
@@ -167,6 +155,7 @@ def add_arg(argsel, arg, enum_def_el):
     el.append(ET.Comment('AIT type name ' + tname))
     el.set('name', arg['name'])
     el.set('units', arg['units'])
+    set_bit_length(el, arg)
     add_desc(el, arg)
     add_range(el, arg)
 
