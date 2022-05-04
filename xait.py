@@ -121,7 +121,7 @@ def add_arg(argsel, arg, enum_def_el):
     if 'value' in arg:
         # TODO:
         # do we skip fixed args?
-        add_comment('Fixed arg:' +
+        add_comment(argsel, 'Fixed arg:' +
             ' name=' + arg['name'] +
             ' type=' + tname +
             ' value=' + arg['value'])
@@ -134,7 +134,7 @@ def add_arg(argsel, arg, enum_def_el):
         el.set('enum_name', ename)
 
     # strings
-    elif re.match('^S[0-9]+$', tname) != None:
+    elif re.match('^S[1-9][0-9]*$', tname) != None:
         el = ET.SubElement(argsel, 'fixed_string_arg')
 
     # unsigned ints
@@ -162,6 +162,7 @@ def add_arg(argsel, arg, enum_def_el):
     # unknown type just handle as a var_string_arg for now
     if el is None:
         el = ET.SubElement(argsel, 'var_string_arg')
+        print('UNKNOWN TYPE: ' + tname)
     else:
         set_bit_length(el, arg)
 
