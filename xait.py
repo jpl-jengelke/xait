@@ -151,12 +151,9 @@ def add_arg(argsel, arg, enum_def_el):
           tname == 'MSB_I64' or tname == 'LSB_I64'):
         el = ET.SubElement(argsel, 'integer_arg')
 
-    # float
-    elif tname == 'MSB_F32' or tname == 'LSB_F32':
-        el = ET.SubElement(argsel, 'float_arg')
-
-    # double
-    elif tname == 'MSB_D64' or tname == 'LSB_D64':
+    # float and double
+    elif (tname == 'MSB_F32' or tname == 'LSB_F32' or
+          tname == 'MSB_D64' or tname == 'LSB_D64'):
         el = ET.SubElement(argsel, 'float_arg')
 
     # unknown type just handle as a var_string_arg for now
