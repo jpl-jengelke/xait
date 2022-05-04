@@ -14,6 +14,7 @@
 #
 
 import os
+import re
 import yaml
 import argparse
 import xml.etree.ElementTree as ET
@@ -78,7 +79,6 @@ def add_enum_table(enum_def_el, arg):
     
 #
 # add range values
-#
 def add_range(el, arg):
     if 'range' in arg:
         ra = arg['range']
@@ -88,13 +88,19 @@ def add_range(el, arg):
         incel.set('max', ra[1])
 
 #
-# add description
+# add comment elements
+def add_comment(el, comment):
+    el.append(ET.Comment(comment))
+
 #
+# add description
 def add_desc(el, arg_or_cmd):
     if 'desc' in arg_or_cmd:
         desc = ET.SubElement(el, 'description')
         desc.text = arg_or_cmd['desc']
 
+#
+# set the bit length by looking at the bytes value in arg
 def set_bit_length(el, arg):
     if 'bytes' not in arg:
         print('expected bytes field in arg ' + arg['name'])
@@ -103,28 +109,33 @@ def set_bit_length(el, arg):
     nb = 1 if type(b) != list else int(b[1])-int(b[0])+1
     el.set('bit_length', str(nb*8))
 
+#
+# add an argument to the command arguments element
+# this is where we look at the types to figure out
+# the type of element to add
 def add_arg(argsel, arg, enum_def_el):
     tname = arg['type']
     el = None
 
+    # fixed args
     if 'value' in arg:
         # TODO:
         # do we skip fixed args?
-        argsel.append(ET.Comment('Fixed arg:' +
+        add_comment('Fixed arg:' +
             ' name=' + arg['name'] +
             ' type=' + tname +
-            ' value=' + arg['value']))
+            ' value=' + arg['value'])
         return
-
-    # strings
-    if tname[0] == 'S':
-        el = ET.SubElement(argsel, 'fixed_string_arg')
 
     # enums
     if 'enum' in arg:
         el = ET.SubElement(argsel, 'enum_arg')
         ename = add_enum_table(enum_def_el, arg)
         el.set('enum_name', ename)
+
+    # strings
+    elif re.match('^S[0-9]+$', tname) != None:
+        el = ET.SubElement(argsel, 'fixed_string_arg')
 
     # unsigned ints
     elif (tname == 'U8' or
@@ -151,11 +162,12 @@ def add_arg(argsel, arg, enum_def_el):
     # unknown type just handle as a var_string_arg for now
     if el is None:
         el = ET.SubElement(argsel, 'var_string_arg')
+    else:
+        set_bit_length(el, arg)
 
-    el.append(ET.Comment('AIT type name ' + tname))
     el.set('name', arg['name'])
     el.set('units', arg['units'])
-    set_bit_length(el, arg)
+    add_comment(el, 'AIT type name ' + tname)
     add_desc(el, arg)
     add_range(el, arg)
 
@@ -201,15 +213,15 @@ def main():
     argparser.add_argument('-m', '--mission', type=str, default='UNKNOWN', help='mission name')
     argparser.add_argument('-i', '--scid', type=int, default=0, help='spacecraft id')
     argparser.add_argument('-v', '--version', type=str, default='0.0.1', help='version of the command dictionary')
-    argparser.add_argument('input_yaml')
-    argparser.add_argument('output_xml')
+    argparser.add_argument('input_yaml', help="file name of the AIT yaml command dictionary")
+    argparser.add_argument('output_xml', help="name for the output xml file")
 
     args = argparser.parse_args()
 
     aitcmds = load_cmds(args.input_yaml)
 
     root = ET.Element('command_dictionary')
-    root.append(ET.Comment(WARNING))
+    add_comment(root, WARNING)
     add_header(root, args.mission, args.version, args.scid)
 
     enum_def_el = ET.SubElement(root, 'enum_definitions')
