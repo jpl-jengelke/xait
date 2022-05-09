@@ -100,14 +100,14 @@ def add_desc(el, arg_or_cmd):
         desc.text = arg_or_cmd['desc']
 
 #
-# set the bit length by looking at the bytes value in arg
-def set_bit_length(el, arg):
+# get the bit length by looking at the bytes value in arg
+def get_bit_length(arg):
     if 'bytes' not in arg:
         print('expected bytes field in arg ' + arg['name'])
         exit(1)
     b = arg['bytes']
     nb = 1 if type(b) != list else int(b[1])-int(b[0])+1
-    el.set('bit_length', str(nb*8))
+    return str(nb*8)
 
 #
 # add an argument to the command arguments element
@@ -135,7 +135,8 @@ def add_arg(argsel, arg, enum_def_el):
 
     # strings
     elif re.match('^S[1-9][0-9]*$', tname) != None:
-        el = ET.SubElement(argsel, 'fixed_string_arg')
+        el = ET.SubElement(argsel, 'var_string_arg')
+        el.set('max_bit_length', get_bit_length(arg))
 
     # unsigned ints
     elif (tname == 'U8' or
@@ -143,6 +144,7 @@ def add_arg(argsel, arg, enum_def_el):
           tname == 'MSB_U32' or tname == 'LSB_U32' or
           tname == 'MSB_U64' or tname == 'LSB_U64'):
         el = ET.SubElement(argsel, 'unsigned_arg')
+        el.set('bit_length', get_bit_length(arg))
 
     # signed ints
     elif (tname == 'I8' or
@@ -150,18 +152,19 @@ def add_arg(argsel, arg, enum_def_el):
           tname == 'MSB_I32' or tname == 'LSB_I32' or
           tname == 'MSB_I64' or tname == 'LSB_I64'):
         el = ET.SubElement(argsel, 'integer_arg')
+        el.set('bit_length', get_bit_length(arg))
 
     # float and double
     elif (tname == 'MSB_F32' or tname == 'LSB_F32' or
           tname == 'MSB_D64' or tname == 'LSB_D64'):
         el = ET.SubElement(argsel, 'float_arg')
+        el.set('bit_length', get_bit_length(arg))
 
     # unknown type just handle as a var_string_arg for now
     if el is None:
-        el = ET.SubElement(argsel, 'var_string_arg')
         print('UNKNOWN TYPE: ' + tname)
-    else:
-        set_bit_length(el, arg)
+        el = ET.SubElement(argsel, 'var_string_arg')
+        el.set('max_bit_length', get_bit_length(arg))
 
     el.set('name', arg['name'])
     el.set('units', arg['units'])
