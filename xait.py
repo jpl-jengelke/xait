@@ -113,7 +113,7 @@ def get_bit_length(arg):
 # add an argument to the command arguments element
 # this is where we look at the types to figure out
 # the type of element to add
-def add_arg(argsel, arg, enum_def_el):
+def add_arg(argsel, arg, enum_def_el, fixed_str):
     tname = arg['type']
     el = None
 
@@ -135,8 +135,12 @@ def add_arg(argsel, arg, enum_def_el):
 
     # strings
     elif re.match('^S[1-9][0-9]*$', tname) != None:
-        el = ET.SubElement(argsel, 'var_string_arg')
-        el.set('max_bit_length', get_bit_length(arg))
+        if fixed_str:
+            el = ET.SubElement(argsel, 'fixed_string_arg')
+            el.set('bit_length', get_bit_length(arg))
+        else:
+            el = ET.SubElement(argsel, 'var_string_arg')
+            el.set('max_bit_length', get_bit_length(arg))
 
     # unsigned ints
     elif (tname == 'U8' or
@@ -176,7 +180,7 @@ def add_arg(argsel, arg, enum_def_el):
 
 #
 # add cmd to command dictionary
-def add_cmd(cdel, cmd, enum_def_el):
+def add_cmd(cdel, cmd, enum_def_el, fixed_str):
     # TODO:
     # should any be hw_command?
     # hw_commands appear to not have any args
@@ -190,7 +194,7 @@ def add_cmd(cdel, cmd, enum_def_el):
     # process each arg
     argsel = ET.SubElement(sc, 'arguments')
     for arg in cmd['arguments']:
-        add_arg(argsel, arg, enum_def_el)
+        add_arg(argsel, arg, enum_def_el, fixed_str)
 
 #
 # add header to command dictionary
@@ -211,6 +215,7 @@ def write_command_dictionary(root, ofname):
 
 def main():
     argparser = argparse.ArgumentParser()
+    argparser.add_argument('-f', '--fixed', action='store_true', help="use fixed width strings for S### types")
     argparser.add_argument('-m', '--mission', type=str, default='UNKNOWN', help='mission name')
     argparser.add_argument('-i', '--scid', type=int, default=0, help='spacecraft id')
     argparser.add_argument('-v', '--version', type=str, default='0.0.1', help='version of the command dictionary')
@@ -229,7 +234,7 @@ def main():
     cdel = ET.SubElement(root, 'command_definitions')
 
     for cmd in aitcmds:
-        add_cmd(cdel, cmd, enum_def_el)
+        add_cmd(cdel, cmd, enum_def_el, args.fixed)
 
     write_command_dictionary(root, args.output_xml)
 
