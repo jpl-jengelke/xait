@@ -198,11 +198,11 @@ def add_cmd(cdel, cmd, enum_def_el, fixed_str):
 
 #
 # add header to command dictionary
-def add_header(root, mission_name, version, scid):
+def add_header(root, mission_name, version, schema_version, scid):
     hel = ET.SubElement(root, 'header')
     hel.set('mission_name', mission_name)
     hel.set('version', version)
-    hel.set('schema_version', '1.0')
+    hel.set('schema_version', schema_version)
     scidsel = ET.SubElement(hel, 'spacecraft_ids')
     scidel = ET.SubElement(scidsel, 'spacecraft_id')
     scidel.set('value', str(scid));
@@ -219,6 +219,7 @@ def main():
     argparser.add_argument('-m', '--mission', type=str, default='UNKNOWN', help='mission name')
     argparser.add_argument('-i', '--scid', type=int, default=0, help='spacecraft id')
     argparser.add_argument('-v', '--version', type=str, default='0.0.1', help='version of the command dictionary')
+    argparser.add_argument('-s', '--schema_version', type=str, default='0.0.1', help='schema version of the command dictionary')
     argparser.add_argument('input_yaml', help="file name of the AIT yaml command dictionary")
     argparser.add_argument('output_xml', help="name for the output xml file")
 
@@ -228,7 +229,7 @@ def main():
 
     root = ET.Element('command_dictionary')
     add_comment(root, WARNING)
-    add_header(root, args.mission, args.version, args.scid)
+    add_header(root, args.mission, args.version, args.schema_version, args.scid)
 
     enum_def_el = ET.SubElement(root, 'enum_definitions')
     cdel = ET.SubElement(root, 'command_definitions')

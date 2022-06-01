@@ -1,7 +1,7 @@
 # xait
 Python script to translate AIT command dictionary YAML to AMPCS XML
 
-`usage: xait.py [-h] [-m MISSION] [-i SCID] [-v VERSION] input_yaml output_xml`
+`usage: xait.py [-h] [-f] [-m MISSION] [-i SCID] [-v VERSION] [-s SCHEMA_VERSION] input_yaml output_xml`
 
 The purpose of this script is to convert an AIT yaml command dictionary to
 the AMPCS XML format for the singular and sole purpose of then being able
