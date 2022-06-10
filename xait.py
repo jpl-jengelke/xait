@@ -90,7 +90,9 @@ def add_range(el, arg):
 #
 # add comment elements
 def add_comment(el, comment):
-    el.append(ET.Comment(comment))
+    # Aerie editor doesn't like comments ..
+    #el.append(ET.Comment(comment))
+    return
 
 #
 # add description
