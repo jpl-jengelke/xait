@@ -51,6 +51,7 @@ TYPE_MAP = {
 ENUM_TABLE_NAMES = {} # dictionary to keep track of enum tables
 
 WRITE_COMMENTS = False
+KEEP_FIXED = False
 
 #
 # recursively load command dictionary files, handling !include
@@ -94,7 +95,7 @@ def add_enum_table(enum_def_el, arg):
     if s not in ENUM_TABLE_NAMES:
         etel = ET.SubElement(enum_def_el, 'enum_table')
         valel = ET.SubElement(etel, 'values')
-        etname = 'enum_' + str(len(ENUM_TABLE_NAMES))
+        etname = 'ENUM_' + str(len(ENUM_TABLE_NAMES))
         etel.set('name', etname)
 
         # iterate over the keys in the enum dict.
@@ -152,13 +153,12 @@ def add_arg(argsel, arg, enum_def_el, fixed_str):
 
     # fixed args
     if 'value' in arg:
-        # TODO:
-        # do we skip fixed args?
-        add_comment(argsel, 'Fixed arg:' +
-            ' name=' + arg['name'] +
-            ' type=' + tname +
-            ' value=' + arg['value'])
-        return
+        if not KEEP_FIXED:
+            add_comment(argsel, 'Fixed arg:' +
+                ' name=' + arg['name'] +
+                ' type=' + tname +
+                ' value=' + arg['value'])
+            return
 
     # enums
     if 'enum' in arg:
@@ -189,6 +189,9 @@ def add_arg(argsel, arg, enum_def_el, fixed_str):
 
     el.set('name', arg['name'])
     el.set('units', arg['units'])
+    if 'value' in arg:
+        el.set('default_value', arg['value'])
+
     add_comment(el, 'AIT type name ' + tname)
     add_desc(el, arg)
     add_range(el, arg)
@@ -196,22 +199,41 @@ def add_arg(argsel, arg, enum_def_el, fixed_str):
     return
 
 #
+#
+def add_cat(cats,cmd,catname):
+    if catname in cmd:
+        el = ET.SubElement(cats, 'category')
+        el.set('name', catname)
+        el.set('value', cmd[catname])
+    return
+
+#
 # add cmd to command dictionary
 def add_cmd(cdel, cmd, enum_def_el, fixed_str):
-    # TODO:
-    # should any be hw_command?
-    # hw_commands appear to not have any args
-    sc = ET.SubElement(cdel, 'fsw_command')
-    sc.set('class', 'FSW')
+    if 'arguments' in cmd :
+        sc = ET.SubElement(cdel, 'fsw_command')
+        sc.set('class', 'FSW')
+    else:
+        sc = ET.SubElement(cdel, 'hw_command')
+
     sc.set('opcode', cmd['opcode'])
     sc.set('stem', cmd['name'])
 
+    if 'level' in cmd or 'type' in cmd or 'subsystem' in cmd:
+        cats = ET.SubElement(sc, 'categories')
+        add_cat(cats,cmd,'level')
+        add_cat(cats,cmd,'type')
+        add_cat(cats,cmd,'subsystem')
+
     add_desc(sc, cmd)
 
-    # process each arg
-    argsel = ET.SubElement(sc, 'arguments')
-    for arg in cmd['arguments']:
-        add_arg(argsel, arg, enum_def_el, fixed_str)
+    if 'arguments' in cmd :
+        # process each arg
+        argsel = ET.SubElement(sc, 'arguments')
+        for arg in cmd['arguments']:
+            add_arg(argsel, arg, enum_def_el, fixed_str)
+
+    return
 
 #
 # add header to command dictionary
@@ -239,12 +261,15 @@ def main():
     argparser.add_argument('-v', '--version', type=str, default='0.0.1', help='version of the command dictionary')
     argparser.add_argument('-s', '--schema_version', type=str, default='0.0.1', help='schema version of the command dictionary')
     argparser.add_argument('-c', '--comments', action='store_true', help='include comments in output (may make the xml unuseable)')
+    argparser.add_argument('-k', '--keepfixed', action='store_true', help='keep fixed value args as default_value')
     argparser.add_argument('input_yaml', help="file name of the AIT yaml command dictionary")
     argparser.add_argument('output_xml', help="name for the output xml file")
     args = argparser.parse_args()
 
-    global WRITE_COMMENTS
+    global WRITE_COMMENTS, KEEP_FIXED
+
     WRITE_COMMENTS = args.comments
+    KEEP_FIXED = args.keepfixed
 
     # load the AIT command dictionary
     aitcmds = load_cmds(args.input_yaml)
