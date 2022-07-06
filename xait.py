@@ -257,7 +257,7 @@ def main():
     argparser = argparse.ArgumentParser()
     argparser.add_argument('-f', '--fixed', action='store_true', help="use fixed width strings for S### types")
     argparser.add_argument('-m', '--mission', type=str, default='UNKNOWN', help='mission name')
-    argparser.add_argument('-i', '--scid', type=int, default=0, help='spacecraft id')
+    argparser.add_argument('-i', '--scid', type=str, default='0', help='spacecraft id')
     argparser.add_argument('-v', '--version', type=str, default='0.0.1', help='version of the command dictionary')
     argparser.add_argument('-s', '--schema_version', type=str, default='0.0.1', help='schema version of the command dictionary')
     argparser.add_argument('-c', '--comments', action='store_true', help='include comments in output (may make the xml unuseable)')

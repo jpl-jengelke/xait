@@ -1,0 +1,501 @@
+- !Command
+  name:   STEM_001
+  opcode: 0x000001
+  level: 0
+  type: Command
+  subsystem: Command Processor (11)
+  desc:   "first stem"
+  arguments:
+    - !Argument
+      name:  flags
+      desc:  "flags arg description"
+      units: none
+      type:  U8
+      bytes: 0
+      enum:
+        0: "NO_OVERWRITE_IMMEDIATE"
+        1: "NO_OVERWRITE_ABSOLUTE"
+        2: "NO_OVERWRITE_RELATIVE"
+        3: "OVERWRITE_IMMEDIATE"
+        4: "OVERWRITE_ABSOLUTE"
+        5: "OVERWRITE_RELATIVE"
+    - !Fixed
+      name:  component_id
+      desc:  "Component ID"
+      units: none
+      type:  U8
+      bytes: 1
+      value: 1
+    - !Fixed
+      name:  interface_id
+      desc:  "Interface ID"
+      units: none
+      type:  U8
+      bytes: 2
+      value: 1
+    - !Fixed
+      name:  message_id
+      desc:  "Message ID"
+      units: none
+      type:  U8
+      bytes: 3
+      value: 1
+    - !Argument
+      name:  exec_seconds
+      desc:  "Execution Time Seconds"
+      units: seconds
+      type:  MSB_U32
+      bytes: [4, 7]
+    - !Argument
+      name:  exec_nanoseconds
+      desc:  "Execution Time Nanoseconds"
+      units: Nanoseconds
+      type:  MSB_U32
+      bytes: [8, 11]
+    - !Argument
+      name:  ground_command_id
+      desc:  "Ground Command ID"
+      units: none
+      type:  MSB_U16
+      bytes: [12, 13]
+    - !Argument
+      name:  command_set_id
+      desc:  "Command Set ID"
+      units: none
+      type:  MSB_U16
+      bytes: [14, 15]
+    - !Argument
+      name:  command_set_index
+      desc:  "Command Set Index"
+      units: none
+      type:  MSB_U16
+      bytes: [16, 17]
+    - !Argument
+      name:  command_set_count
+      desc:  "Command Set Count"
+      units: none
+      type:  MSB_U16
+      bytes: [18, 19]
+    - !Argument
+      name:  set_id
+      desc:  "The set id to use for the elements of the sequence, 0 to treat them as individual commands"
+      units: unitless
+      type:  MSB_U16
+      bytes: [20, 21]
+    - !Argument
+      name:  delete_after_scheduling
+      desc:  "If the command sequence file should be deleted after its commands have been scheduled"
+      units: unitless
+      type:  U8
+      bytes: 22
+      enum:
+        0: "NO"
+        1: "YES"
+    - !Argument
+      name:  filename_len
+      desc:  "Length of the filename field"
+      units: bytes
+      type:  MSB_U32
+      bytes: [23, 26]
+    - !Argument
+      name:  filename
+      desc:  "DYNAMIC ARRAY: Full path filename for the command sequence to be executed"
+      units: string
+      type:  S512
+      bytes: [27, 538]
+
+- !Command
+  name:   STEM_002
+  opcode: 0x000002
+  level: 0
+  type: Command
+  subsystem: Command Processor (11)
+  desc:   "second stem"
+  arguments:
+    - !Argument
+      name:  flags
+      desc:  "flags arg description"
+      units: none
+      type:  U8
+      bytes: 0
+      enum:
+        0: "NO_OVERWRITE_IMMEDIATE"
+        1: "NO_OVERWRITE_ABSOLUTE"
+        2: "NO_OVERWRITE_RELATIVE"
+        64: "OVERWRITE_IMMEDIATE"
+        65: "OVERWRITE_ABSOLUTE"
+        66: "OVERWRITE_RELATIVE"
+    - !Fixed
+      name:  component_id
+      desc:  "Component ID"
+      units: none
+      type:  U8
+      bytes: 1
+      value: 1
+    - !Fixed
+      name:  interface_id
+      desc:  "Interface ID"
+      units: none
+      type:  U8
+      bytes: 2
+      value: 1
+    - !Fixed
+      name:  message_id
+      desc:  "Message ID"
+      units: none
+      type:  U8
+      bytes: 3
+      value: 3
+    - !Argument
+      name:  exec_seconds
+      desc:  "Execution Time Seconds"
+      units: seconds
+      type:  MSB_U32
+      bytes: [4, 7]
+    - !Argument
+      name:  exec_nanoseconds
+      desc:  "Execution Time Nanoseconds"
+      units: Nanoseconds
+      type:  MSB_U32
+      bytes: [8, 11]
+    - !Argument
+      name:  ground_command_id
+      desc:  "Ground Command ID"
+      units: none
+      type:  MSB_U16
+      bytes: [12, 13]
+    - !Argument
+      name:  command_set_id
+      desc:  "Command Set ID"
+      units: none
+      type:  MSB_U16
+      bytes: [14, 15]
+    - !Argument
+      name:  command_set_index
+      desc:  "Command Set Index"
+      units: none
+      type:  MSB_U16
+      bytes: [16, 17]
+    - !Argument
+      name:  command_set_count
+      desc:  "Command Set Count"
+      units: none
+      type:  MSB_U16
+      bytes: [18, 19]
+    - !Argument
+      name:  queue
+      desc:  "Enumeration indicating which queue(s) are to be cleared."
+      units: unitless
+      type:  U8
+      bytes: 20
+      enum:
+        1: "ABSOLUTE"
+        2: "RELATIVE"
+        3: "BOTH"
+    - !Argument
+      name:  level
+      desc:  "The level to clear"
+      units: unitless
+      type:  U8
+      bytes: 21
+      range: [0, 3]
+    - !Argument
+      name:  comparison
+      desc:  "Enumeration used to determine which levels to clear."
+      units: unitless
+      type:  U8
+      bytes: 22
+      enum:
+        1: "LE"
+        2: "EQ"
+        3: "GE"
+
+- !Command
+  name:   STEM_003
+  opcode: 0x000003
+  level: 0
+  type: Request
+  subsystem: Command Processor (11)
+  desc:   "third stem"
+  arguments:
+    - !Argument
+      name:  flags
+      desc:  "flags arg description"
+      units: none
+      type:  U8
+      bytes: 0
+      enum:
+        1: "NO_OVERWRITE_IMMEDIATE"
+        2: "NO_OVERWRITE_ABSOLUTE"
+        3: "NO_OVERWRITE_RELATIVE"
+        4: "OVERWRITE_IMMEDIATE"
+        5: "OVERWRITE_ABSOLUTE"
+        6: "OVERWRITE_RELATIVE"
+    - !Fixed
+      name:  component_id
+      desc:  "Component ID"
+      units: none
+      type:  U8
+      bytes: 1
+      value: 11
+    - !Fixed
+      name:  interface_id
+      desc:  "Interface ID"
+      units: none
+      type:  U8
+      bytes: 2
+      value: 1
+    - !Fixed
+      name:  message_id
+      desc:  "Message ID"
+      units: none
+      type:  U8
+      bytes: 3
+      value: 4
+    - !Argument
+      name:  exec_seconds
+      desc:  "Execution Time Seconds"
+      units: seconds
+      type:  MSB_U32
+      bytes: [4, 7]
+    - !Argument
+      name:  exec_nanoseconds
+      desc:  "Execution Time Nanoseconds"
+      units: Nanoseconds
+      type:  MSB_U32
+      bytes: [8, 11]
+    - !Argument
+      name:  ground_command_id
+      desc:  "Ground Command ID"
+      units: none
+      type:  MSB_U16
+      bytes: [12, 13]
+    - !Argument
+      name:  command_set_id
+      desc:  "Command Set ID"
+      units: none
+      type:  MSB_U16
+      bytes: [14, 15]
+    - !Argument
+      name:  command_set_index
+      desc:  "Command Set Index"
+      units: none
+      type:  MSB_U16
+      bytes: [16, 17]
+    - !Argument
+      name:  command_set_count
+      desc:  "Command Set Count"
+      units: none
+      type:  MSB_U16
+      bytes: [18, 19]
+    - !Argument
+      name:  queue
+      desc:  "Enumeration indicating which queue(s) are to be queried."
+      units: unitless
+      type:  U8
+      bytes: 20
+      enum:
+        1: "ABSOLUTE"
+        2: "RELATIVE"
+        3: "BOTH"
+    - !Argument
+      name:  level
+      desc:  "The level to query"
+      units: unitless
+      type:  U8
+      bytes: 21
+      range: [0, 3]
+    - !Argument
+      name:  comparison
+      desc:  "Enumeration used to determine which levels to query."
+      units: unitless
+      type:  U8
+      bytes: 22
+      enum:
+        1: "LE"
+        2: "EQ"
+        3: "GE"
+
+- !Command
+  name:   STEM_004
+  opcode: 0x000004
+  level: 0
+  type: Command
+  subsystem: Telemetry Processor (12)
+  desc:   "fourth stem"
+  arguments:
+    - !Argument
+      name:  flags
+      desc:  "flags arg description"
+      units: none
+      type:  U8
+      bytes: 0
+      enum:
+        0: "NO_OVERWRITE_IMMEDIATE"
+        1: "NO_OVERWRITE_ABSOLUTE"
+        2: "NO_OVERWRITE_RELATIVE"
+        3: "OVERWRITE_IMMEDIATE"
+        4: "OVERWRITE_ABSOLUTE"
+        5: "OVERWRITE_RELATIVE"
+    - !Fixed
+      name:  component_id
+      desc:  "Component ID"
+      units: none
+      type:  U8
+      bytes: 1
+      value: 1
+    - !Fixed
+      name:  interface_id
+      desc:  "Interface ID"
+      units: none
+      type:  U8
+      bytes: 2
+      value: 1
+    - !Fixed
+      name:  message_id
+      desc:  "Message ID"
+      units: none
+      type:  U8
+      bytes: 3
+      value: 4
+    - !Argument
+      name:  exec_seconds
+      desc:  "Execution Time Seconds"
+      units: seconds
+      type:  MSB_U32
+      bytes: [4, 7]
+    - !Argument
+      name:  exec_nanoseconds
+      desc:  "Execution Time Nanoseconds"
+      units: Nanoseconds
+      type:  MSB_U32
+      bytes: [8, 11]
+    - !Argument
+      name:  ground_command_id
+      desc:  "Ground Command ID"
+      units: none
+      type:  MSB_U16
+      bytes: [12, 13]
+    - !Argument
+      name:  command_set_id
+      desc:  "Command Set ID"
+      units: none
+      type:  MSB_U16
+      bytes: [14, 15]
+    - !Argument
+      name:  command_set_index
+      desc:  "Command Set Index"
+      units: none
+      type:  MSB_U16
+      bytes: [16, 17]
+    - !Argument
+      name:  command_set_count
+      desc:  "Command Set Count"
+      units: none
+      type:  MSB_U16
+      bytes: [18, 19]
+    - !Argument
+      name:  config_ids_len
+      desc:  "Length of the config_ids field"
+      units: bytes
+      type:  MSB_U32
+      bytes: [20, 23]
+    - !Argument
+      name:  config_ids
+      desc:  "DYNAMIC ARRAY: Array of configuration ids"
+      units: unitless
+      type:  U8[255]
+      bytes: [24, 278]
+
+- !Command
+  name:   STEM_005
+  opcode: 0x000005
+  level: 0
+  type: Command
+  subsystem: Mission Manager (15)
+  desc:   "fifth stem"
+  arguments:
+    - !Argument
+      name:  flags
+      desc:  "flags arg description"
+      units: none
+      type:  U8
+      bytes: 0
+      enum:
+        0: "NO_OVERWRITE_IMMEDIATE"
+        1: "NO_OVERWRITE_ABSOLUTE"
+        2: "NO_OVERWRITE_RELATIVE"
+        3: "OVERWRITE_IMMEDIATE"
+        4: "OVERWRITE_ABSOLUTE"
+        5: "OVERWRITE_RELATIVE"
+    - !Fixed
+      name:  component_id
+      desc:  "Component ID"
+      units: none
+      type:  U8
+      bytes: 1
+      value: 15
+    - !Fixed
+      name:  interface_id
+      desc:  "Interface ID"
+      units: none
+      type:  U8
+      bytes: 2
+      value: 2
+    - !Fixed
+      name:  message_id
+      desc:  "Message ID"
+      units: none
+      type:  U8
+      bytes: 3
+      value: 1
+    - !Argument
+      name:  exec_seconds
+      desc:  "Execution Time Seconds"
+      units: seconds
+      type:  MSB_U32
+      bytes: [4, 7]
+    - !Argument
+      name:  exec_nanoseconds
+      desc:  "Execution Time Nanoseconds"
+      units: Nanoseconds
+      type:  MSB_U32
+      bytes: [8, 11]
+    - !Argument
+      name:  ground_command_id
+      desc:  "Ground Command ID"
+      units: none
+      type:  MSB_U16
+      bytes: [12, 13]
+    - !Argument
+      name:  command_set_id
+      desc:  "Command Set ID"
+      units: none
+      type:  MSB_U16
+      bytes: [14, 15]
+    - !Argument
+      name:  command_set_index
+      desc:  "Command Set Index"
+      units: none
+      type:  MSB_U16
+      bytes: [16, 17]
+    - !Argument
+      name:  command_set_count
+      desc:  "Command Set Count"
+      units: none
+      type:  MSB_U16
+      bytes: [18, 19]
+    - !Argument
+      name:  deadband
+      desc:  "deadband"
+      units: Nms
+      type:  MSB_F32
+      bytes: [20, 23]
+      range: [0.0, 0.02]
+    - !Argument
+      name:  time_limit
+      desc:  "Maximum allowable duration of desaturation"
+      units: seconds
+      type:  MSB_U16
+      bytes: [24, 25]
+      range: [0, 12000]

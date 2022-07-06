@@ -1,0 +1,271 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<command_dictionary>
+  <header mission_name="UNKNOWN" version="0.0.1" schema_version="0.0.1">
+    <spacecraft_ids>
+      <spacecraft_id value="0" />
+    </spacecraft_ids>
+  </header>
+  <enum_definitions>
+    <enum_table name="ENUM_0">
+      <values>
+        <enum symbol="NO_OVERWRITE_IMMEDIATE" numeric="0" />
+        <enum symbol="NO_OVERWRITE_ABSOLUTE" numeric="1" />
+        <enum symbol="NO_OVERWRITE_RELATIVE" numeric="2" />
+        <enum symbol="OVERWRITE_IMMEDIATE" numeric="3" />
+        <enum symbol="OVERWRITE_ABSOLUTE" numeric="4" />
+        <enum symbol="OVERWRITE_RELATIVE" numeric="5" />
+      </values>
+    </enum_table>
+    <enum_table name="ENUM_1">
+      <values>
+        <enum symbol="NO" numeric="0" />
+        <enum symbol="YES" numeric="1" />
+      </values>
+    </enum_table>
+    <enum_table name="ENUM_2">
+      <values>
+        <enum symbol="NO_OVERWRITE_IMMEDIATE" numeric="0" />
+        <enum symbol="NO_OVERWRITE_ABSOLUTE" numeric="1" />
+        <enum symbol="NO_OVERWRITE_RELATIVE" numeric="2" />
+        <enum symbol="OVERWRITE_IMMEDIATE" numeric="64" />
+        <enum symbol="OVERWRITE_ABSOLUTE" numeric="65" />
+        <enum symbol="OVERWRITE_RELATIVE" numeric="66" />
+      </values>
+    </enum_table>
+    <enum_table name="ENUM_3">
+      <values>
+        <enum symbol="ABSOLUTE" numeric="1" />
+        <enum symbol="RELATIVE" numeric="2" />
+        <enum symbol="BOTH" numeric="3" />
+      </values>
+    </enum_table>
+    <enum_table name="ENUM_4">
+      <values>
+        <enum symbol="LE" numeric="1" />
+        <enum symbol="EQ" numeric="2" />
+        <enum symbol="GE" numeric="3" />
+      </values>
+    </enum_table>
+    <enum_table name="ENUM_5">
+      <values>
+        <enum symbol="NO_OVERWRITE_IMMEDIATE" numeric="1" />
+        <enum symbol="NO_OVERWRITE_ABSOLUTE" numeric="2" />
+        <enum symbol="NO_OVERWRITE_RELATIVE" numeric="3" />
+        <enum symbol="OVERWRITE_IMMEDIATE" numeric="4" />
+        <enum symbol="OVERWRITE_ABSOLUTE" numeric="5" />
+        <enum symbol="OVERWRITE_RELATIVE" numeric="6" />
+      </values>
+    </enum_table>
+  </enum_definitions>
+  <command_definitions>
+    <fsw_command class="FSW" opcode="0x000001" stem="STEM_001">
+      <categories>
+        <category name="level" value="0" />
+        <category name="type" value="Command" />
+        <category name="subsystem" value="Command Processor (11)" />
+      </categories>
+      <description>first stem</description>
+      <arguments>
+        <enum_arg enum_name="ENUM_0" bit_length="8" name="flags" units="none">
+          <description>flags arg description</description>
+        </enum_arg>
+        <unsigned_arg bit_length="32" name="exec_seconds" units="seconds">
+          <description>Execution Time Seconds</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="32" name="exec_nanoseconds" units="Nanoseconds">
+          <description>Execution Time Nanoseconds</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="ground_command_id" units="none">
+          <description>Ground Command ID</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_id" units="none">
+          <description>Command Set ID</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_index" units="none">
+          <description>Command Set Index</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_count" units="none">
+          <description>Command Set Count</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="set_id" units="unitless">
+          <description>The set id to use for the elements of the sequence, 0 to treat them as individual commands</description>
+        </unsigned_arg>
+        <enum_arg enum_name="ENUM_1" bit_length="8" name="delete_after_scheduling" units="unitless">
+          <description>If the command sequence file should be deleted after its commands have been scheduled</description>
+        </enum_arg>
+        <unsigned_arg bit_length="32" name="filename_len" units="bytes">
+          <description>Length of the filename field</description>
+        </unsigned_arg>
+        <fixed_string_arg bit_length="4096" name="filename" units="string">
+          <description>DYNAMIC ARRAY: Full path filename for the command sequence to be executed</description>
+        </fixed_string_arg>
+      </arguments>
+    </fsw_command>
+    <fsw_command class="FSW" opcode="0x000002" stem="STEM_002">
+      <categories>
+        <category name="level" value="0" />
+        <category name="type" value="Command" />
+        <category name="subsystem" value="Command Processor (11)" />
+      </categories>
+      <description>second stem</description>
+      <arguments>
+        <enum_arg enum_name="ENUM_2" bit_length="8" name="flags" units="none">
+          <description>flags arg description</description>
+        </enum_arg>
+        <unsigned_arg bit_length="32" name="exec_seconds" units="seconds">
+          <description>Execution Time Seconds</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="32" name="exec_nanoseconds" units="Nanoseconds">
+          <description>Execution Time Nanoseconds</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="ground_command_id" units="none">
+          <description>Ground Command ID</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_id" units="none">
+          <description>Command Set ID</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_index" units="none">
+          <description>Command Set Index</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_count" units="none">
+          <description>Command Set Count</description>
+        </unsigned_arg>
+        <enum_arg enum_name="ENUM_3" bit_length="8" name="queue" units="unitless">
+          <description>Enumeration indicating which queue(s) are to be cleared.</description>
+        </enum_arg>
+        <unsigned_arg bit_length="8" name="level" units="unitless">
+          <description>The level to clear</description>
+          <range_of_values>
+            <include min="0" max="3" />
+          </range_of_values>
+        </unsigned_arg>
+        <enum_arg enum_name="ENUM_4" bit_length="8" name="comparison" units="unitless">
+          <description>Enumeration used to determine which levels to clear.</description>
+        </enum_arg>
+      </arguments>
+    </fsw_command>
+    <fsw_command class="FSW" opcode="0x000003" stem="STEM_003">
+      <categories>
+        <category name="level" value="0" />
+        <category name="type" value="Request" />
+        <category name="subsystem" value="Command Processor (11)" />
+      </categories>
+      <description>third stem</description>
+      <arguments>
+        <enum_arg enum_name="ENUM_5" bit_length="8" name="flags" units="none">
+          <description>flags arg description</description>
+        </enum_arg>
+        <unsigned_arg bit_length="32" name="exec_seconds" units="seconds">
+          <description>Execution Time Seconds</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="32" name="exec_nanoseconds" units="Nanoseconds">
+          <description>Execution Time Nanoseconds</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="ground_command_id" units="none">
+          <description>Ground Command ID</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_id" units="none">
+          <description>Command Set ID</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_index" units="none">
+          <description>Command Set Index</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_count" units="none">
+          <description>Command Set Count</description>
+        </unsigned_arg>
+        <enum_arg enum_name="ENUM_3" bit_length="8" name="queue" units="unitless">
+          <description>Enumeration indicating which queue(s) are to be queried.</description>
+        </enum_arg>
+        <unsigned_arg bit_length="8" name="level" units="unitless">
+          <description>The level to query</description>
+          <range_of_values>
+            <include min="0" max="3" />
+          </range_of_values>
+        </unsigned_arg>
+        <enum_arg enum_name="ENUM_4" bit_length="8" name="comparison" units="unitless">
+          <description>Enumeration used to determine which levels to query.</description>
+        </enum_arg>
+      </arguments>
+    </fsw_command>
+    <fsw_command class="FSW" opcode="0x000004" stem="STEM_004">
+      <categories>
+        <category name="level" value="0" />
+        <category name="type" value="Command" />
+        <category name="subsystem" value="Telemetry Processor (12)" />
+      </categories>
+      <description>fourth stem</description>
+      <arguments>
+        <enum_arg enum_name="ENUM_0" bit_length="8" name="flags" units="none">
+          <description>flags arg description</description>
+        </enum_arg>
+        <unsigned_arg bit_length="32" name="exec_seconds" units="seconds">
+          <description>Execution Time Seconds</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="32" name="exec_nanoseconds" units="Nanoseconds">
+          <description>Execution Time Nanoseconds</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="ground_command_id" units="none">
+          <description>Ground Command ID</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_id" units="none">
+          <description>Command Set ID</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_index" units="none">
+          <description>Command Set Index</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_count" units="none">
+          <description>Command Set Count</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="32" name="config_ids_len" units="bytes">
+          <description>Length of the config_ids field</description>
+        </unsigned_arg>
+        <var_string_arg max_bit_length="2040" name="config_ids" units="unitless">
+          <description>DYNAMIC ARRAY: Array of configuration ids</description>
+        </var_string_arg>
+      </arguments>
+    </fsw_command>
+    <fsw_command class="FSW" opcode="0x000005" stem="STEM_005">
+      <categories>
+        <category name="level" value="0" />
+        <category name="type" value="Command" />
+        <category name="subsystem" value="Mission Manager (15)" />
+      </categories>
+      <description>fifth stem</description>
+      <arguments>
+        <enum_arg enum_name="ENUM_0" bit_length="8" name="flags" units="none">
+          <description>flags arg description</description>
+        </enum_arg>
+        <unsigned_arg bit_length="32" name="exec_seconds" units="seconds">
+          <description>Execution Time Seconds</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="32" name="exec_nanoseconds" units="Nanoseconds">
+          <description>Execution Time Nanoseconds</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="ground_command_id" units="none">
+          <description>Ground Command ID</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_id" units="none">
+          <description>Command Set ID</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_index" units="none">
+          <description>Command Set Index</description>
+        </unsigned_arg>
+        <unsigned_arg bit_length="16" name="command_set_count" units="none">
+          <description>Command Set Count</description>
+        </unsigned_arg>
+        <float_arg bit_length="32" name="deadband" units="Nms">
+          <description>deadband</description>
+          <range_of_values>
+            <include min="0.0" max="0.02" />
+          </range_of_values>
+        </float_arg>
+        <unsigned_arg bit_length="16" name="time_limit" units="seconds">
+          <description>Maximum allowable duration of desaturation</description>
+          <range_of_values>
+            <include min="0" max="12000" />
+          </range_of_values>
+        </unsigned_arg>
+      </arguments>
+    </fsw_command>
+  </command_definitions>
+</command_dictionary>
