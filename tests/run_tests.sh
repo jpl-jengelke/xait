@@ -1,18 +1,40 @@
-#! /bin/sh
+#! /bin/bash
 
 XAIT=../xait.py
+NUM_FAILED=0
+
+run_test() {
+	local args=$1
+	local fname=$2
+	echo -n "Running test $fname.."
+	$XAIT cmd.yaml $args output/$fname >& /dev/null
+	if [ $? -ne 0 ]; then
+		echo "run failed."
+		NUM_FAILED=$((NUM_FAILED+1))
+		return 1
+	fi
+	diff expected/$fname output/$fname
+	if [ $? -ne 0 ]; then
+		echo "diff failed."
+		NUM_FAILED=$((NUM_FAILED+1))
+		return 1
+	fi
+	echo "passed"
+	return 0
+}
+
 rm -fr output
 mkdir -p output
-$XAIT cmd.yaml output/baseline.xml
-$XAIT cmd.yaml -f output/fixed_strings.xml
-$XAIT cmd.yaml -c output/with_comments.xml
-$XAIT cmd.yaml -k output/keep_fixed.xml
-$XAIT cmd.yaml -m mission_name -i 0x1234 output/with_ids.xml
-$XAIT cmd.yaml -v version_id -s schema_version output/with_versions.xml
 
-diff expected output
-if [ $? -eq 0 ]; then
+run_test "" baseline.xml
+run_test "-f" fixed_strings.xml
+run_test "-c" with_comments.xml
+run_test "-k" keep_fixed.xml
+run_test "-m mission_name -i 0x1234" with_ids.xml
+run_test "-v version_id -s schema_version" with_versions.xml
+
+if [ $NUM_FAILED -eq 0 ]; then
 	echo "All tests passed!"
 else
-	echo "Something failed."
+	echo "$NUM_FAILED test(s) failed."
 fi
