@@ -28,3 +28,5 @@ to use Aerie/Falcon Editor to create sequences in the seq.json format. It is
 almost certain that this script does NOT create fully compliant AMPCS XML.
 
 Of note: The seq.json format produced by Aerie/Falcon can change at any time.
+
+Python 3.9 is recommended for best results
