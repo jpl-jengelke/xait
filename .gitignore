@@ -1,1 +1,3 @@
 tests/output
+.DS_Store
+.coverage
