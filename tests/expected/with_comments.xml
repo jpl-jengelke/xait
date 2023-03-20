@@ -9,52 +9,12 @@
   <enum_definitions>
     <enum_table name="ENUM_0">
       <values>
-        <enum symbol="NO_OVERWRITE_IMMEDIATE" numeric="0" />
-        <enum symbol="NO_OVERWRITE_ABSOLUTE" numeric="1" />
-        <enum symbol="NO_OVERWRITE_RELATIVE" numeric="2" />
-        <enum symbol="OVERWRITE_IMMEDIATE" numeric="3" />
-        <enum symbol="OVERWRITE_ABSOLUTE" numeric="4" />
-        <enum symbol="OVERWRITE_RELATIVE" numeric="5" />
-      </values>
-    </enum_table>
-    <enum_table name="ENUM_1">
-      <values>
-        <enum symbol="NO" numeric="0" />
-        <enum symbol="YES" numeric="1" />
-      </values>
-    </enum_table>
-    <enum_table name="ENUM_2">
-      <values>
-        <enum symbol="NO_OVERWRITE_IMMEDIATE" numeric="0" />
-        <enum symbol="NO_OVERWRITE_ABSOLUTE" numeric="1" />
-        <enum symbol="NO_OVERWRITE_RELATIVE" numeric="2" />
-        <enum symbol="OVERWRITE_IMMEDIATE" numeric="64" />
-        <enum symbol="OVERWRITE_ABSOLUTE" numeric="65" />
-        <enum symbol="OVERWRITE_RELATIVE" numeric="66" />
-      </values>
-    </enum_table>
-    <enum_table name="ENUM_3">
-      <values>
-        <enum symbol="ABSOLUTE" numeric="1" />
-        <enum symbol="RELATIVE" numeric="2" />
-        <enum symbol="BOTH" numeric="3" />
-      </values>
-    </enum_table>
-    <enum_table name="ENUM_4">
-      <values>
-        <enum symbol="LE" numeric="1" />
-        <enum symbol="EQ" numeric="2" />
-        <enum symbol="GE" numeric="3" />
-      </values>
-    </enum_table>
-    <enum_table name="ENUM_5">
-      <values>
-        <enum symbol="NO_OVERWRITE_IMMEDIATE" numeric="1" />
-        <enum symbol="NO_OVERWRITE_ABSOLUTE" numeric="2" />
-        <enum symbol="NO_OVERWRITE_RELATIVE" numeric="3" />
-        <enum symbol="OVERWRITE_IMMEDIATE" numeric="4" />
-        <enum symbol="OVERWRITE_ABSOLUTE" numeric="5" />
-        <enum symbol="OVERWRITE_RELATIVE" numeric="6" />
+        <enum symbol="ENUM_VAL_0" numeric="0" />
+        <enum symbol="ENUM_VAL_1" numeric="1" />
+        <enum symbol="ENUM_VAL_2" numeric="2" />
+        <enum symbol="ENUM_VAL_3" numeric="3" />
+        <enum symbol="ENUM_VAL_4" numeric="4" />
+        <enum symbol="ENUM_VAL_5" numeric="5" />
       </values>
     </enum_table>
   </enum_definitions>
@@ -63,273 +23,71 @@
       <categories>
         <category name="level" value="0" />
         <category name="type" value="Command" />
-        <category name="subsystem" value="Command Processor (11)" />
+        <category name="subsystem" value="Subsystem 1" />
       </categories>
       <description>first stem</description>
       <arguments>
-        <enum_arg enum_name="ENUM_0" bit_length="8" name="flags" units="none">
+        <enum_arg enum_name="ENUM_0" bit_length="8" name="arg1_u8enum" units="none">
           <!--AIT type name U8-->
-          <description>flags arg description</description>
+          <description>enum arg1 description</description>
         </enum_arg>
-        <!--Fixed arg: name=component_id type=U8 value=1-->
-        <!--Fixed arg: name=interface_id type=U8 value=1-->
-        <!--Fixed arg: name=message_id type=U8 value=1-->
-        <unsigned_arg bit_length="32" name="exec_seconds" units="seconds">
+        <!--Fixed arg: name=fixed1_u8val type=U8 value=1-->
+        <unsigned_arg bit_length="16" name="arg2_u16" units="none">
+          <!--AIT type name MSB_U16-->
+          <description>U16 arg2 description</description>
+          <range_of_values>
+            <include min="0" max="1000" />
+          </range_of_values>
+        </unsigned_arg>
+        <unsigned_arg bit_length="32" name="arg3_u32_sec" units="seconds">
           <!--AIT type name MSB_U32-->
-          <description>Execution Time Seconds</description>
+          <description>U32 arg3 description units of seconds</description>
         </unsigned_arg>
-        <unsigned_arg bit_length="32" name="exec_nanoseconds" units="Nanoseconds">
+        <unsigned_arg bit_length="32" name="arg4_u32_nanosec" units="nanoseconds">
           <!--AIT type name MSB_U32-->
-          <description>Execution Time Nanoseconds</description>
+          <description>U32 arg4 description units of nanoseconds</description>
         </unsigned_arg>
-        <unsigned_arg bit_length="16" name="ground_command_id" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Ground Command ID</description>
+        <unsigned_arg bit_length="64" name="arg5_u64" units="none">
+          <!--AIT type name MSB_U64-->
+          <description>U64 arg5 description</description>
         </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_id" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set ID</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_index" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set Index</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_count" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set Count</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="set_id" units="unitless">
-          <!--AIT type name MSB_U16-->
-          <description>The set id to use for the elements of the sequence, 0 to treat them as individual commands</description>
-        </unsigned_arg>
-        <enum_arg enum_name="ENUM_1" bit_length="8" name="delete_after_scheduling" units="unitless">
-          <!--AIT type name U8-->
-          <description>If the command sequence file should be deleted after its commands have been scheduled</description>
-        </enum_arg>
         <unsigned_arg bit_length="32" name="filename_len" units="bytes">
           <!--AIT type name MSB_U32-->
-          <description>Length of the filename field</description>
+          <description>U32 length of the filename field</description>
         </unsigned_arg>
         <var_string_arg max_bit_length="4096" name="filename" units="string">
           <!--AIT type name S512-->
-          <description>DYNAMIC ARRAY: Full path filename for the command sequence to be executed</description>
+          <description>S512 filename</description>
         </var_string_arg>
       </arguments>
     </fsw_command>
     <fsw_command class="FSW" opcode="0x000002" stem="STEM_002">
       <categories>
         <category name="level" value="0" />
-        <category name="type" value="Command" />
-        <category name="subsystem" value="Command Processor (11)" />
+        <category name="type" value="Request" />
+        <category name="subsystem" value="Subsystem 2" />
       </categories>
       <description>second stem</description>
       <arguments>
-        <enum_arg enum_name="ENUM_2" bit_length="8" name="flags" units="none">
-          <!--AIT type name U8-->
-          <description>flags arg description</description>
-        </enum_arg>
-        <!--Fixed arg: name=component_id type=U8 value=1-->
-        <!--Fixed arg: name=interface_id type=U8 value=1-->
-        <!--Fixed arg: name=message_id type=U8 value=3-->
-        <unsigned_arg bit_length="32" name="exec_seconds" units="seconds">
-          <!--AIT type name MSB_U32-->
-          <description>Execution Time Seconds</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="32" name="exec_nanoseconds" units="Nanoseconds">
-          <!--AIT type name MSB_U32-->
-          <description>Execution Time Nanoseconds</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="ground_command_id" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Ground Command ID</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_id" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set ID</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_index" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set Index</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_count" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set Count</description>
-        </unsigned_arg>
-        <enum_arg enum_name="ENUM_3" bit_length="8" name="queue" units="unitless">
-          <!--AIT type name U8-->
-          <description>Enumeration indicating which queue(s) are to be cleared.</description>
-        </enum_arg>
-        <unsigned_arg bit_length="8" name="level" units="unitless">
-          <!--AIT type name U8-->
-          <description>The level to clear</description>
-          <range_of_values>
-            <include min="0" max="3" />
-          </range_of_values>
-        </unsigned_arg>
-        <enum_arg enum_name="ENUM_4" bit_length="8" name="comparison" units="unitless">
-          <!--AIT type name U8-->
-          <description>Enumeration used to determine which levels to clear.</description>
-        </enum_arg>
-      </arguments>
-    </fsw_command>
-    <fsw_command class="FSW" opcode="0x000003" stem="STEM_003">
-      <categories>
-        <category name="level" value="0" />
-        <category name="type" value="Request" />
-        <category name="subsystem" value="Command Processor (11)" />
-      </categories>
-      <description>third stem</description>
-      <arguments>
-        <enum_arg enum_name="ENUM_5" bit_length="8" name="flags" units="none">
-          <!--AIT type name U8-->
-          <description>flags arg description</description>
-        </enum_arg>
-        <!--Fixed arg: name=component_id type=U8 value=11-->
-        <!--Fixed arg: name=interface_id type=U8 value=1-->
-        <!--Fixed arg: name=message_id type=U8 value=4-->
-        <unsigned_arg bit_length="32" name="exec_seconds" units="seconds">
-          <!--AIT type name MSB_U32-->
-          <description>Execution Time Seconds</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="32" name="exec_nanoseconds" units="Nanoseconds">
-          <!--AIT type name MSB_U32-->
-          <description>Execution Time Nanoseconds</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="ground_command_id" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Ground Command ID</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_id" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set ID</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_index" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set Index</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_count" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set Count</description>
-        </unsigned_arg>
-        <enum_arg enum_name="ENUM_3" bit_length="8" name="queue" units="unitless">
-          <!--AIT type name U8-->
-          <description>Enumeration indicating which queue(s) are to be queried.</description>
-        </enum_arg>
-        <unsigned_arg bit_length="8" name="level" units="unitless">
-          <!--AIT type name U8-->
-          <description>The level to query</description>
-          <range_of_values>
-            <include min="0" max="3" />
-          </range_of_values>
-        </unsigned_arg>
-        <enum_arg enum_name="ENUM_4" bit_length="8" name="comparison" units="unitless">
-          <!--AIT type name U8-->
-          <description>Enumeration used to determine which levels to query.</description>
-        </enum_arg>
-      </arguments>
-    </fsw_command>
-    <fsw_command class="FSW" opcode="0x000004" stem="STEM_004">
-      <categories>
-        <category name="level" value="0" />
-        <category name="type" value="Command" />
-        <category name="subsystem" value="Telemetry Processor (12)" />
-      </categories>
-      <description>fourth stem</description>
-      <arguments>
-        <enum_arg enum_name="ENUM_0" bit_length="8" name="flags" units="none">
-          <!--AIT type name U8-->
-          <description>flags arg description</description>
-        </enum_arg>
-        <!--Fixed arg: name=component_id type=U8 value=1-->
-        <!--Fixed arg: name=interface_id type=U8 value=1-->
-        <!--Fixed arg: name=message_id type=U8 value=4-->
-        <unsigned_arg bit_length="32" name="exec_seconds" units="seconds">
-          <!--AIT type name MSB_U32-->
-          <description>Execution Time Seconds</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="32" name="exec_nanoseconds" units="Nanoseconds">
-          <!--AIT type name MSB_U32-->
-          <description>Execution Time Nanoseconds</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="ground_command_id" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Ground Command ID</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_id" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set ID</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_index" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set Index</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_count" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set Count</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="32" name="config_ids_len" units="bytes">
-          <!--AIT type name MSB_U32-->
-          <description>Length of the config_ids field</description>
-        </unsigned_arg>
-        <var_string_arg max_bit_length="2040" name="config_ids" units="unitless">
-          <!--AIT type name U8[255]-->
-          <description>DYNAMIC ARRAY: Array of configuration ids</description>
-        </var_string_arg>
-      </arguments>
-    </fsw_command>
-    <fsw_command class="FSW" opcode="0x000005" stem="STEM_005">
-      <categories>
-        <category name="level" value="0" />
-        <category name="type" value="Command" />
-        <category name="subsystem" value="Mission Manager (15)" />
-      </categories>
-      <description>fifth stem</description>
-      <arguments>
-        <enum_arg enum_name="ENUM_0" bit_length="8" name="flags" units="none">
-          <!--AIT type name U8-->
-          <description>flags arg description</description>
-        </enum_arg>
-        <!--Fixed arg: name=component_id type=U8 value=15-->
-        <!--Fixed arg: name=interface_id type=U8 value=2-->
-        <!--Fixed arg: name=message_id type=U8 value=1-->
-        <unsigned_arg bit_length="32" name="exec_seconds" units="seconds">
-          <!--AIT type name MSB_U32-->
-          <description>Execution Time Seconds</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="32" name="exec_nanoseconds" units="Nanoseconds">
-          <!--AIT type name MSB_U32-->
-          <description>Execution Time Nanoseconds</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="ground_command_id" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Ground Command ID</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_id" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set ID</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_index" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set Index</description>
-        </unsigned_arg>
-        <unsigned_arg bit_length="16" name="command_set_count" units="none">
-          <!--AIT type name MSB_U16-->
-          <description>Command Set Count</description>
-        </unsigned_arg>
-        <float_arg bit_length="32" name="deadband" units="Nms">
+        <!--Fixed arg: name=fixarg1_i8 type=I8 value=-1-->
+        <!--Fixed arg: name=fixarg2_i16 type=MSB_I16 value=32767-->
+        <!--Fixed arg: name=fixarg3_i32 type=MSB_I32 value=2147483647-->
+        <integer_arg bit_length="64" name="arg1_i64" units="none">
+          <!--AIT type name MSB_I64-->
+          <description>I64 arg1 description</description>
+        </integer_arg>
+        <float_arg bit_length="32" name="arg2_f32" units="none">
           <!--AIT type name MSB_F32-->
-          <description>deadband</description>
-          <range_of_values>
-            <include min="0.0" max="0.02" />
-          </range_of_values>
+          <description>F32 arg2 description</description>
         </float_arg>
-        <unsigned_arg bit_length="16" name="time_limit" units="seconds">
-          <!--AIT type name MSB_U16-->
-          <description>Maximum allowable duration of desaturation</description>
-          <range_of_values>
-            <include min="0" max="12000" />
-          </range_of_values>
-        </unsigned_arg>
+        <float_arg bit_length="64" name="arg3_d64" units="none">
+          <!--AIT type name MSB_D64-->
+          <description>D64 arg3 description</description>
+        </float_arg>
+        <var_string_arg max_bit_length="2040" name="arg4_u8_arr_255" units="none">
+          <!--AIT type name U8[255]-->
+          <description>U8 array 255 arg4 description</description>
+        </var_string_arg>
       </arguments>
     </fsw_command>
   </command_definitions>
