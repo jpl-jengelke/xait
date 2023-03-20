@@ -67,6 +67,7 @@ ENUM_TABLE_NAMES = {} # dictionary to keep track of enum tables
 
 WRITE_COMMENTS = False
 KEEP_FIXED = False
+FIXED_WIDTH = False
 
 #
 # recursively load command dictionary files, handling !include
@@ -162,7 +163,7 @@ def get_bit_length(arg):
 # add an argument to the command arguments element
 # this is where we look at the types to figure out
 # the type of element to add
-def add_arg(argsel, arg, enum_def_el, fixed_str):
+def add_arg(argsel, arg, enum_def_el):
     tname = arg['type']
     el = None
 
@@ -184,7 +185,7 @@ def add_arg(argsel, arg, enum_def_el, fixed_str):
 
     # strings
     elif re.match('^S[1-9][0-9]*$', tname) != None:
-        if fixed_str:
+        if FIXED_WIDTH:
             el = ET.SubElement(argsel, 'fixed_string_arg')
             el.set('bit_length', get_bit_length(arg))
         else:
@@ -224,7 +225,7 @@ def add_cat(cats,cmd,catname):
 
 #
 # add cmd to command dictionary
-def add_cmd(cdel, cmd, enum_def_el, fixed_str):
+def add_cmd(cdel, cmd, enum_def_el):
     if 'arguments' in cmd :
         sc = ET.SubElement(cdel, 'fsw_command')
         sc.set('class', 'FSW')
@@ -246,7 +247,7 @@ def add_cmd(cdel, cmd, enum_def_el, fixed_str):
         # process each arg
         argsel = ET.SubElement(sc, 'arguments')
         for arg in cmd['arguments']:
-            add_arg(argsel, arg, enum_def_el, fixed_str)
+            add_arg(argsel, arg, enum_def_el)
 
     return
 
@@ -288,10 +289,11 @@ def main():
     argparser.add_argument('output_xml', help="name for the output xml file")
     args = argparser.parse_args()
 
-    global WRITE_COMMENTS, KEEP_FIXED
+    global WRITE_COMMENTS, KEEP_FIXED, FIXED_WIDTH
 
     WRITE_COMMENTS = args.comments
     KEEP_FIXED = args.keepfixed
+    FIXED_WIDTH = args.fixed
 
     # load the AIT command dictionary
     aitcmds = load_cmds(args.input_yaml)
@@ -310,7 +312,7 @@ def main():
     # iterate over commands in the ait command dictionary
     # and add elements to the xml doc
     for cmd in aitcmds:
-        add_cmd(cdel, cmd, enum_def_el, args.fixed)
+        add_cmd(cdel, cmd, enum_def_el)
 
     # write the xml doc
     write_command_dictionary(root, args.output_xml)
