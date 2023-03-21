@@ -3,8 +3,6 @@
 The purpose of this script is to convert an [AIT yaml command dictionary](https://ait-core.readthedocs.io/en/latest/command_intro.html#) to
 the [AMPCS XML command dictionary](https://github.com/NASA-AMMOS/ampcs-dict-schemas/blob/main/CommandDictionary.rnc). The orignal reason behind the creation of the script was to be able to use the [Aerie Sequence Editor](https://nasa-ammos.github.io/aerie-docs/sequencing/editor/) to create sequences in the [seq-json](https://github.com/NASA-AMMOS/seq-json-schema) format. The Aerie sequence editor currently accepts command dictionaries in the AMPCS XML format. 
 
-Note this script may not create fully compliant AMPCS XML.
-
 Python 3.9 is recommended for best results
 
 ```
